@@ -1,27 +1,282 @@
 @model List<ClubService>
-@{ ViewData["Home"] = true; }
+@{
+    ViewData["Home"] = true;
+}
+
 <section class="hero" aria-labelledby="hero-title">
-    <img asp-append-version="true" class="hero-image" src="/images/arena.webp" alt="Интерьер ARENA: игровые места и уютная зона отдыха" width="2736" height="1536" fetchpriority="high" />
+    <img
+        asp-append-version="true"
+        class="hero-image"
+        src="/images/arena.webp"
+        alt="Интерьер ARENA: игровые места и уютная зона отдыха"
+        width="2736"
+        height="1536"
+        fetchpriority="high"
+    />
     <div class="hero-shade"></div>
-    <div class="hero-content container"><p class="eyebrow"><span class="status-dot"></span> КОНЦЕПЦИЯ ИГРОВОГО ПРОСТРАНСТВА</p><h1 id="hero-title">ТВОЁ МЕСТО<br />В ИГРЕ<span class="hero-period">.</span></h1><p class="hero-description">Оставь повседневность за дверью.<br /> Здесь только ты, твоя команда и следующая победа.</p><div class="hero-actions"><a class="button button-light" href="/services">Выбрать зону <span>↗</span></a><a class="button button-glass" href="#interior">Внутри клуба <span>↓</span></a></div></div>
-    <div class="hero-bottom container"><span>PLAY. CONNECT. REPEAT.</span><a href="#zones">ЛИСТАЙ И ОТКРЫВАЙ <span>↓</span></a><span>PC / CONSOLE / LOUNGE</span></div>
-</section>
-<section class="intro section-space container"><span class="section-index">01 / АТМОСФЕРА</span><div class="intro-grid"><h2>БОЛЬШЕ, ЧЕМ<br />ПРОСТО ИГРА.</h2><div><p class="lead">Здесь можно быть собой.<br />И играть на своём уровне.</p><p class="muted">Собраться своей командой. Погрузиться в новый мир. Провести вечер за любимой игрой. Мы придумали пространство для каждого из этих сценариев.</p></div></div></section>
-<section class="zones section-space container" id="zones" aria-labelledby="zones-title">
-    <div class="section-heading"><div><span class="section-index">02 / ВЫБИРАЙ СВОЙ ФОРМАТ</span><h2 id="zones-title">ТЕРРИТОРИЯ ИГРЫ.</h2></div><a class="text-link" href="/services">Все зоны и тарифы <span>↗</span></a></div>
-    @if (Model.Count > 0) {
-        <div class="zone-tabs" role="tablist" aria-label="Игровые зоны">
-        @for (var i=0;i<Model.Count;i++) { var zone = Model[i]; <button id="zone-tab-@zone.Id" type="button" role="tab" aria-selected="@(i==0 ? "true" : "false")" aria-controls="zone-panel-@zone.Id" tabindex="@(i==0 ? "0" : "-1")" data-zone-tab="@zone.Id"><span class="tab-number">0@(i+1)</span>@zone.Name<span class="tab-arrow">↗</span></button> }
+    <div class="hero-content container">
+        <p class="eyebrow"><span class="status-dot"></span> КОНЦЕПЦИЯ ИГРОВОГО ПРОСТРАНСТВА</p>
+        <h1 id="hero-title">ТВОЁ МЕСТО<br />В ИГРЕ<span class="hero-period">.</span></h1>
+        <p class="hero-description">
+            Оставь повседневность за дверью.
+            <br />
+
+            Здесь только ты, твоя команда и следующая победа.
+        </p>
+        <div class="hero-actions">
+            <a class="button button-light" href="/services">Выбрать зону <span>↗</span></a>
+            <a class="button button-glass" href="#interior">Внутри клуба <span>↓</span></a>
         </div>
-        @for (var i=0;i<Model.Count;i++) { var zone = Model[i];
-            <div class="zone-panel" id="zone-panel-@zone.Id" role="tabpanel" aria-labelledby="zone-tab-@zone.Id" tabindex="0" hidden="@(i!=0)">
-                <div class="zone-photo"><img asp-append-version="true" src="@zone.ImagePath" alt="Концепция зоны @zone.Name" loading="lazy" width="1344" height="768" /><span class="photo-tag">@zone.Category?.Name</span><button class="expand-photo" type="button" data-gallery="@zone.ImagePath" data-caption="Концепция зоны @zone.Name" aria-label="Увеличить фото @zone.Name">↗</button></div>
-                <div class="zone-info"><span class="eyebrow">YOUR NEXT LEVEL</span><h3>@zone.Name</h3><p class="zone-summary">@zone.Summary</p><div class="spec-list">@foreach(var spec in zone.Specs.Split('•')){<span>@spec.Trim()</span>}</div><div class="zone-price"><strong>@zone.Price.ToString("0.##") ₽</strong><span>/ @zone.PriceUnit</span></div><span class="tariff-note">Демонстрационный тариф</span><a class="button button-light" href="/services/@zone.Id">Подробнее о зоне <span>↗</span></a></div>
+    </div>
+    <div class="hero-bottom container">
+        <span>PLAY. CONNECT. REPEAT.</span>
+        <a href="#zones">ЛИСТАЙ И ОТКРЫВАЙ <span>↓</span></a>
+        <span>PC / CONSOLE / LOUNGE</span>
+    </div>
+</section>
+
+<section class="intro section-space container">
+    <span class="section-index">01 / АТМОСФЕРА</span>
+    <div class="intro-grid">
+        <h2>БОЛЬШЕ, ЧЕМ<br />ПРОСТО ИГРА.</h2>
+        <div>
+            <p class="lead">Здесь можно быть собой.<br />И играть на своём уровне.</p>
+            <p class="muted">
+                Собраться своей командой. Погрузиться в новый мир. Провести вечер за любимой игрой. Мы придумали пространство для каждого из этих сценариев.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="zones section-space container" id="zones" aria-labelledby="zones-title">
+    <div class="section-heading">
+        <div>
+            <span class="section-index">02 / ВЫБИРАЙ СВОЙ ФОРМАТ</span>
+            <h2 id="zones-title">ТЕРРИТОРИЯ ИГРЫ.</h2>
+        </div>
+        <a class="text-link" href="/services">Все зоны и тарифы <span>↗</span></a>
+    </div>
+    @if (Model.Count > 0)
+    {
+        <div class="zone-tabs" role="tablist" aria-label="Игровые зоны">
+            @for (var i = 0; i < Model.Count; i++)
+            {
+                var zone = Model[i];
+                <button
+                    id="zone-tab-@zone.Id"
+                    type="button"
+                    role="tab"
+                    aria-selected="@(i==0 ? "true" : "false")"
+                    aria-controls="zone-panel-@zone.Id"
+                    tabindex="@(i==0 ? "0" : "-1")"
+                    data-zone-tab="@zone.Id"
+                >
+                    <span class="tab-number">0@(i+1)</span>
+                    @zone.Name
+                    <span class="tab-arrow">↗</span>
+                </button>
+
+            }
+        </div>
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            var zone = Model[i];
+            <div
+                class="zone-panel"
+                id="zone-panel-@zone.Id"
+                role="tabpanel"
+                aria-labelledby="zone-tab-@zone.Id"
+                tabindex="0"
+                hidden="@(i!=0)"
+            >
+                <div class="zone-photo">
+                    <img
+                        asp-append-version="true"
+                        src="@zone.ImagePath"
+                        alt="Концепция зоны @zone.Name"
+                        loading="lazy"
+                        width="1344"
+                        height="768"
+                    />
+                    <span class="photo-tag">@zone.Category?.Name</span>
+                    <button
+                        class="expand-photo"
+                        type="button"
+                        data-gallery="@zone.ImagePath"
+                        data-caption="Концепция зоны @zone.Name"
+                        aria-label="Увеличить фото @zone.Name"
+                    >
+                        ↗
+                    </button>
+                </div>
+                <div class="zone-info">
+                    <span class="eyebrow">YOUR NEXT LEVEL</span>
+                    <h3>@zone.Name</h3>
+                    <p class="zone-summary">@zone.Summary</p>
+                    <div class="spec-list">
+                        @foreach (var spec in zone.Specs.Split('•'))
+                        {
+                            <span>@spec.Trim()</span>
+                        }
+                    </div>
+                    <div class="zone-price">
+                        <strong>@zone.Price.ToString("0.##") ₽</strong>
+                        <span>/ @zone.PriceUnit</span>
+                    </div>
+                    <span class="tariff-note">Демонстрационный тариф</span>
+                    <a class="button button-light" href="/services/@zone.Id">
+                        Подробнее о зоне
+                        <span>↗</span>
+                    </a>
+                </div>
             </div>
         }
-    } else { <div class="empty-state"><h3>Готовим игровые зоны</h3><p>Каталог скоро появится.</p></div> }
+    }
+    else
+    {
+        <div class="empty-state">
+            <h3>Готовим игровые зоны</h3>
+            <p>Каталог скоро появится.</p>
+        </div>
+
+    }
 </section>
-<section class="equipment section-space" id="equipment"><div class="equipment-photo"><img asp-append-version="true" src="/images/arena.webp" alt="Концепция игровых мест с большими мониторами" loading="lazy" width="1344" height="768" /></div><div class="equipment-copy"><span class="section-index">03 / НИЧЕГО ЛИШНЕГО</span><h2>ВСЁ ВНИМАНИЕ —<br />НА ИГРУ.</h2><p class="muted">Продуманное рабочее место, в котором каждая деталь помогает сосредоточиться на главном.</p><div class="equipment-item"><span>01</span><div><h3>Большой экран</h3><p>Больше деталей. Глубже погружение.</p></div><span>↗</span></div><div class="equipment-item"><span>02</span><div><h3>Точная периферия</h3><p>Каждое движение имеет значение.</p></div><span>↗</span></div><div class="equipment-item"><span>03</span><div><h3>Личное пространство</h3><p>Удобство на протяжении всей сессии.</p></div><span>↗</span></div><a href="/services" class="text-link">Найти свою конфигурацию <span>↗</span></a></div></section>
-<section class="benefits section-space container"><div class="section-heading"><span class="section-index">04 / ДЛЯ СВОИХ</span><h2>ИГРАТЬ. ОБЩАТЬСЯ.<br />ВОЗВРАЩАТЬСЯ.</h2></div><div class="benefit-grid"><article><span class="benefit-number">[ 01 ]</span><h3>ТВОЯ КОМАНДА</h3><p>Общее пространство или отдельная комната — выбирай формат вашей встречи.</p></article><article><span class="benefit-number">[ 02 ]</span><h3>ТВОЙ РИТМ</h3><p>Короткий матч или длинная сессия. В каталоге можно найти подходящий тариф.</p></article><article><span class="benefit-number">[ 03 ]</span><h3>ТВОЯ АТМОСФЕРА</h3><p>Сдержанный свет, удобные места и внимание к деталям игрового пространства.</p></article></div></section>
-<section class="interior section-space container" id="interior"><div class="section-heading"><div><span class="section-index">05 / ВЗГЛЯНИ ВНУТРЬ</span><h2>ПОЧУВСТВУЙ МЕСТО.</h2></div><span class="muted small">Концепция интерьера / AI visual</span></div><div class="gallery-grid"><button class="gallery-tile gallery-wide" type="button" data-gallery="/images/arena.webp" data-caption="Общий зал — концепция"><img asp-append-version="true" src="/images/arena.webp" alt="Концепция общего зала" loading="lazy" width="1360" height="768"/><span>ОБЩИЙ ЗАЛ <span>↗</span></span></button><button class="gallery-tile" type="button" data-gallery="/images/private.jpg" data-caption="Приватная комната — концепция"><img asp-append-version="true" src="/images/private.jpg" alt="Концепция приватной комнаты" loading="lazy" width="1360" height="768"/><span>PRIVATE ROOM <span>↗</span></span></button><button class="gallery-tile" type="button" data-gallery="/images/lounge.jpg" data-caption="Консольная зона — концепция"><img asp-append-version="true" src="/images/lounge.jpg" alt="Концепция консольного лаунжа" loading="lazy" width="1360" height="768"/><span>CONSOLE LOUNGE <span>↗</span></span></button></div></section>
-<section class="closing container"><span class="section-index">06 / УВИДИМСЯ В ИГРЕ</span><h2>ТВОЯ СЛЕДУЮЩАЯ<br />ИСТОРИЯ — ЗДЕСЬ<span>.</span></h2><div class="closing-bottom"><p>Начни с выбора своего пространства.</p><a class="button button-light" href="/services">Войти в игру <span>↗</span></a><a class="text-link" href="/contacts">Связаться с клубом <span>↗</span></a></div></section>
+
+<section class="equipment section-space" id="equipment">
+    <div class="equipment-photo">
+        <img
+            asp-append-version="true"
+            src="/images/arena.webp"
+            alt="Концепция игровых мест с большими мониторами"
+            loading="lazy"
+            width="1344"
+            height="768"
+        />
+    </div>
+    <div class="equipment-copy">
+        <span class="section-index">03 / НИЧЕГО ЛИШНЕГО</span>
+        <h2>ВСЁ ВНИМАНИЕ —<br />НА ИГРУ.</h2>
+        <p class="muted">
+            Продуманное рабочее место, в котором каждая деталь помогает сосредоточиться на главном.
+        </p>
+        <div class="equipment-item">
+            <span>01</span>
+            <div>
+                <h3>Большой экран</h3>
+                <p>Больше деталей. Глубже погружение.</p>
+            </div>
+            <span>↗</span>
+        </div>
+        <div class="equipment-item">
+            <span>02</span>
+            <div>
+                <h3>Точная периферия</h3>
+                <p>Каждое движение имеет значение.</p>
+            </div>
+            <span>↗</span>
+        </div>
+        <div class="equipment-item">
+            <span>03</span>
+            <div>
+                <h3>Личное пространство</h3>
+                <p>Удобство на протяжении всей сессии.</p>
+            </div>
+            <span>↗</span>
+        </div>
+        <a href="/services" class="text-link">Найти свою конфигурацию <span>↗</span></a>
+    </div>
+</section>
+
+<section class="benefits section-space container">
+    <div class="section-heading">
+        <span class="section-index">04 / ДЛЯ СВОИХ</span>
+        <h2>ИГРАТЬ. ОБЩАТЬСЯ.<br />ВОЗВРАЩАТЬСЯ.</h2>
+    </div>
+    <div class="benefit-grid">
+        <article>
+            <span class="benefit-number">[ 01 ]</span>
+            <h3>ТВОЯ КОМАНДА</h3>
+            <p>Общее пространство или отдельная комната — выбирай формат вашей встречи.</p>
+        </article>
+        <article>
+            <span class="benefit-number">[ 02 ]</span>
+            <h3>ТВОЙ РИТМ</h3>
+            <p>Короткий матч или длинная сессия. В каталоге можно найти подходящий тариф.</p>
+        </article>
+        <article>
+            <span class="benefit-number">[ 03 ]</span>
+            <h3>ТВОЯ АТМОСФЕРА</h3>
+            <p>Сдержанный свет, удобные места и внимание к деталям игрового пространства.</p>
+        </article>
+    </div>
+</section>
+
+<section class="interior section-space container" id="interior">
+    <div class="section-heading">
+        <div>
+            <span class="section-index">05 / ВЗГЛЯНИ ВНУТРЬ</span>
+            <h2>ПОЧУВСТВУЙ МЕСТО.</h2>
+        </div>
+        <span class="muted small">Концепция интерьера / AI visual</span>
+    </div>
+    <div class="gallery-grid">
+        <button
+            class="gallery-tile gallery-wide"
+            type="button"
+            data-gallery="/images/arena.webp"
+            data-caption="Общий зал — концепция"
+        >
+            <img
+                asp-append-version="true"
+                src="/images/arena.webp"
+                alt="Концепция общего зала"
+                loading="lazy"
+                width="1360"
+                height="768"
+            />
+            <span>ОБЩИЙ ЗАЛ <span>↗</span></span>
+        </button>
+        <button
+            class="gallery-tile"
+            type="button"
+            data-gallery="/images/private.jpg"
+            data-caption="Приватная комната — концепция"
+        >
+            <img
+                asp-append-version="true"
+                src="/images/private.jpg"
+                alt="Концепция приватной комнаты"
+                loading="lazy"
+                width="1360"
+                height="768"
+            />
+            <span>PRIVATE ROOM <span>↗</span></span>
+        </button>
+        <button
+            class="gallery-tile"
+            type="button"
+            data-gallery="/images/lounge.jpg"
+            data-caption="Консольная зона — концепция"
+        >
+            <img
+                asp-append-version="true"
+                src="/images/lounge.jpg"
+                alt="Концепция консольного лаунжа"
+                loading="lazy"
+                width="1360"
+                height="768"
+            />
+            <span>CONSOLE LOUNGE <span>↗</span></span>
+        </button>
+    </div>
+</section>
+
+<section class="closing container">
+    <span class="section-index">06 / УВИДИМСЯ В ИГРЕ</span>
+    <h2>ТВОЯ СЛЕДУЮЩАЯ<br />ИСТОРИЯ — ЗДЕСЬ<span>.</span></h2>
+    <div class="closing-bottom">
+        <p>Начни с выбора своего пространства.</p>
+        <a class="button button-light" href="/services">Войти в игру <span>↗</span></a>
+        <a class="text-link" href="/contacts">Связаться с клубом <span>↗</span></a>
+    </div>
+</section>

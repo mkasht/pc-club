@@ -21,13 +21,17 @@ if (isCloud)
     builder.Services.AddScoped<ClubDbContext>(services => services.GetRequiredService<CloudDbContext>());
     var certificate = builder.Configuration["CloudKeyCertificate"] ?? throw new InvalidOperationException("Cloud key certificate is not configured.");
     builder.Services.AddDataProtection().SetApplicationName("PcClub.Layero").PersistKeysToDbContext<CloudDbContext>()
-        .ProtectKeysWithCertificate(X509CertificateLoader.LoadPkcs12(Convert.FromBase64String(certificate), null, X509KeyStorageFlags.EphemeralKeySet));
+        .ProtectKeysWithCertificate(X509CertificateLoader.LoadPkcs12(Convert.FromBase64String(certificate),
+        null,
+        X509KeyStorageFlags.EphemeralKeySet));
     builder.Configuration["AllowedHosts"] = "*";
-    if (int.TryParse(builder.Configuration["PORT"], out var cloudPort)) builder.WebHost.UseUrls($"http://0.0.0.0:{cloudPort}");
+    if (int.TryParse(builder.Configuration["PORT"], out var cloudPort))
+        builder.WebHost.UseUrls($"http://0.0.0.0:{cloudPort}");
 }
-else builder.Services.AddDbContext<ClubDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Club")));
+else
+    builder.Services.AddDbContext<ClubDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Club")));
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
+    {
     options.Password.RequiredLength = 10;
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
@@ -36,14 +40,15 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-}).AddEntityFrameworkStores<ClubDbContext>().AddDefaultTokenProviders();
+    }).AddEntityFrameworkStores<ClubDbContext>().AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options =>
-{
+    {
     options.LoginPath = "/account/login";
     options.AccessDeniedPath = "/account/denied";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.Lax;
-    if (isCloud) options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    if (isCloud)
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     // Keep auth redirects on the public HTTPS origin behind TLS termination.
     options.Events.OnRedirectToLogin = context =>
     {
@@ -55,7 +60,7 @@ builder.Services.ConfigureApplicationCookie(options =>
         context.Response.Redirect(new Uri(context.RedirectUri).PathAndQuery);
         return Task.CompletedTask;
     };
-});
+    });
 builder.Services.AddScoped<ICatalogRepository, CatalogRepository>();
 builder.Services.Configure<ClubOptions>(builder.Configuration.GetSection("Club"));
 var culture = CultureInfo.GetCultureInfo("ru-RU");
@@ -65,24 +70,24 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment()) { app.UseExceptionHandler("/error"); app.UseHsts(); }
 app.UseSerilogRequestLogging();
 app.Use(async (context, next) =>
-{
+    {
     context.Response.Headers.XContentTypeOptions = "nosniff";
     context.Response.Headers.XFrameOptions = "SAMEORIGIN";
     context.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     await next();
-});
+    });
 app.UseStaticFiles();
 // HTML and authentication redirects depend on the current account.
 // Do this before authorization so a guest/user 302 cannot be cached for an admin.
 app.Use(async (context, next) =>
-{
+    {
     context.Response.Headers.CacheControl = "private, no-store, no-cache, max-age=0";
     context.Response.Headers.Pragma = "no-cache";
     context.Response.Headers.Expires = "0";
     context.Response.Headers["X-Accel-Expires"] = "0";
     context.Response.Headers.Append("Vary", "Cookie");
     await next();
-});
+    });
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,3 +1,56 @@
 @model RegisterForm
-@{ var setup = ViewData["Setup"] is true; ViewData["Title"] = setup ? "Первый администратор" : "Регистрация"; }
-<section class="auth-layout"><div class="auth-photo"><img asp-append-version="true" src="/images/arena.webp" alt="Концепция общего игрового зала"/><div><span class="eyebrow">YOUR PLACE TO PLAY</span><h2>СТАНЬ<br/>ЧАСТЬЮ КЛУБА.</h2></div></div><div class="auth-content"><a href="/" class="muted small">← На главную</a><span class="section-index">@(setup ? "ЛОКАЛЬНАЯ НАСТРОЙКА" : "НАЧАЛО ТВОЕЙ ИСТОРИИ")</span><h1>@(setup ? "ПЕРВЫЙ АДМИНИСТРАТОР." : "ДОБРО ПОЖАЛОВАТЬ.")</h1><p class="muted">@(setup ? "Создай личный доступ к управлению. Эта страница доступна только на этом компьютере до создания администратора." : "Создай аккаунт в игровом пространстве.")</p><form asp-action="@(setup ? "Setup" : "Register")" method="post" class="form-stack"><div asp-validation-summary="All" class="validation" role="alert"></div><div class="field"><label asp-for="Email"></label><input asp-for="Email" autocomplete="username" type="email" required/><span asp-validation-for="Email"></span></div><div class="field"><label asp-for="Password"></label><input asp-for="Password" autocomplete="new-password" required minlength="10" aria-describedby="password-help"/><span asp-validation-for="Password"></span><small id="password-help">Минимум 10 символов. Можно использовать любые буквы и знаки.</small></div><div class="field"><label asp-for="ConfirmPassword"></label><input asp-for="ConfirmPassword" autocomplete="new-password" required/><span asp-validation-for="ConfirmPassword"></span></div><button class="button button-light" type="submit">@(setup ? "Создать администратора" : "Создать аккаунт") <span>↗</span></button></form>@if(!setup){<p class="auth-switch">Уже с нами? <a href="/account/login">Войти ↗</a></p>}</div></section>
+@{
+    var setup = ViewData["Setup"] is true;
+    ViewData["Title"] = setup ? "Первый администратор" : "Регистрация";
+}
+
+<section class="auth-layout">
+    <div class="auth-photo">
+        <img asp-append-version="true" src="/images/arena.webp" alt="Концепция общего игрового зала"/>
+        <div>
+            <span class="eyebrow">YOUR PLACE TO PLAY</span>
+            <h2>СТАНЬ<br/>ЧАСТЬЮ КЛУБА.</h2>
+        </div>
+    </div>
+    <div class="auth-content">
+        <a href="/" class="muted small">← На главную</a>
+        <span class="section-index">@(setup ? "ЛОКАЛЬНАЯ НАСТРОЙКА" : "НАЧАЛО ТВОЕЙ ИСТОРИИ")</span>
+        <h1>@(setup ? "ПЕРВЫЙ АДМИНИСТРАТОР." : "ДОБРО ПОЖАЛОВАТЬ.")</h1>
+        <p class="muted">
+            @(setup ? "Создай личный доступ к управлению. Эта страница доступна только на этом компьютере до создания администратора." : "Создай аккаунт в игровом пространстве.")
+        </p>
+        <form asp-action="@(setup ? "Setup" : "Register")" method="post" class="form-stack">
+            <div asp-validation-summary="All" class="validation" role="alert"></div>
+            <div class="field">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" autocomplete="username" type="email" required/>
+                <span asp-validation-for="Email"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Password"></label>
+                <input
+                    asp-for="Password"
+                    autocomplete="new-password"
+                    required
+                    minlength="10"
+                    aria-describedby="password-help"
+                />
+                <span asp-validation-for="Password"></span>
+                <small id="password-help">Минимум 10 символов. Можно использовать любые буквы и знаки.</small>
+            </div>
+            <div class="field">
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" autocomplete="new-password" required/>
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+            <button class="button button-light" type="submit">
+                @(setup ? "Создать администратора" : "Создать аккаунт")
+                <span>↗</span>
+            </button>
+        </form>
+        @if (!setup)
+        {
+            <p class="auth-switch">Уже с нами? <a href="/account/login">Войти ↗</a></p>
+        }
+    </div>
+</section>

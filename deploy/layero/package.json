@@ -1,1 +1,8 @@
-{"name":"pc-club-server","private":true,"version":"1.0.0","scripts":{"start":"node launch.cjs"}}
+{
+    "name": "pc-club-server",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node launch.cjs"
+    }
+}

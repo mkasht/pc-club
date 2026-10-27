@@ -28,6 +28,12 @@ public class StoredImage
 // Design-time only: migration generation does not connect to this placeholder.
 public class CloudDbContextFactory : IDesignTimeDbContextFactory<CloudDbContext>
 {
-    public CloudDbContext CreateDbContext(string[] args) => new(new DbContextOptionsBuilder<CloudDbContext>()
-        .UseNpgsql("Host=localhost;Database=pcclub_design;Username=design", options => options.MigrationsHistoryTable("__EFMigrationsHistory", CloudDbContext.Schema)).Options);
+    public CloudDbContext CreateDbContext(string[] args) =>
+        new(new DbContextOptionsBuilder<CloudDbContext>()
+            .UseNpgsql(
+                "Host=localhost;Database=pcclub_design;Username=design",
+                options => options.MigrationsHistoryTable(
+                    "__EFMigrationsHistory",
+                    CloudDbContext.Schema))
+            .Options);
 }

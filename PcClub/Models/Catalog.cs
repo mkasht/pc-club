@@ -4,12 +4,18 @@ namespace PcClub.Models;
 
 public abstract class EntityBase
 {
-    public int Id { get; set; }
+    public int Id
+    {
+        get; set;
+    }
     [Required(ErrorMessage = "Укажите название"), StringLength(100)]
     [Display(Name = "Название")]
     public string Name { get; set; } = "";
     [Range(0, 9999), Display(Name = "Порядок показа")]
-    public int SortOrder { get; set; }
+    public int SortOrder
+    {
+        get; set;
+    }
 }
 
 public class ServiceCategory : EntityBase
@@ -24,7 +30,10 @@ public class ClubService : EntityBase
     [Required, StringLength(3000), Display(Name = "Описание")]
     public string Description { get; set; } = "";
     [Range(0, 1000000), Display(Name = "Цена, ₽")]
-    public decimal Price { get; set; }
+    public decimal Price
+    {
+        get; set;
+    }
     [Required, StringLength(40), Display(Name = "Единица тарифа")]
     public string PriceUnit { get; set; } = "час";
     [Required, StringLength(250), Display(Name = "Характеристики (через •)")]
@@ -32,8 +41,14 @@ public class ClubService : EntityBase
     [StringLength(250)]
     public string ImagePath { get; set; } = "/images/arena.webp";
     [Range(1, int.MaxValue), Display(Name = "Категория")]
-    public int ServiceCategoryId { get; set; }
-    public ServiceCategory? Category { get; set; }
+    public int ServiceCategoryId
+    {
+        get; set;
+    }
+    public ServiceCategory? Category
+    {
+        get; set;
+    }
 }
 
 public record CatalogPage(IReadOnlyList<ServiceCategory> Categories, IReadOnlyList<ClubService> Services, int? CategoryId);

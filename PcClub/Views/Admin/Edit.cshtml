@@ -1,3 +1,86 @@
 @model ClubService
-@{ ViewData["Title"] = Model.Id==0 ? "Новая услуга" : "Изменить услугу"; }
-<section class="admin-page container"><a class="muted small" href="/admin">← К управлению каталогом</a><h1>@(Model.Id==0 ? "НОВАЯ УСЛУГА." : "РЕДАКТИРОВАНИЕ.")</h1><form asp-action="Save" asp-route-id="@(Model.Id==0 ? null : (int?)Model.Id)" method="post" enctype="multipart/form-data" class="edit-form"><div asp-validation-summary="All" class="validation" role="alert"></div><div class="form-grid"><div class="field"><label asp-for="Name"></label><input asp-for="Name" required/><span asp-validation-for="Name"></span></div><div class="field"><label asp-for="ServiceCategoryId"></label><select asp-for="ServiceCategoryId" asp-items="ViewBag.Categories"><option value="">Выберите категорию</option></select><span asp-validation-for="ServiceCategoryId"></span></div><div class="field"><label asp-for="Price"></label><input asp-for="Price" type="text" inputmode="decimal" required/><small>Дробную часть указывайте через запятую.</small><span asp-validation-for="Price"></span></div><div class="field"><label asp-for="PriceUnit"></label><input asp-for="PriceUnit" required/><span asp-validation-for="PriceUnit"></span></div></div><div class="field"><label asp-for="Summary"></label><textarea asp-for="Summary" rows="2" required></textarea><span asp-validation-for="Summary"></span></div><div class="field"><label asp-for="Description"></label><textarea asp-for="Description" rows="5" required></textarea><span asp-validation-for="Description"></span></div><div class="field"><label asp-for="Specs"></label><input asp-for="Specs" required/><span asp-validation-for="Specs"></span></div><div class="field"><label asp-for="SortOrder"></label><input asp-for="SortOrder" type="number" min="0" max="9999"/><span asp-validation-for="SortOrder"></span></div><div class="field"><label for="image">Изображение</label><input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" data-image-input/><small>JPEG, PNG или WebP, до 4 МБ. Если файл не выбран, текущее изображение сохранится.</small>@Html.ValidationMessage("image")<img asp-append-version="true" class="image-preview" src="@Model.ImagePath" alt="Предпросмотр изображения услуги" data-image-preview/></div><div class="form-actions"><button class="button button-light" type="submit">Сохранить услугу <span>↗</span></button><a class="text-link" href="/admin">Отмена</a></div></form></section>
+@{
+    ViewData["Title"] = Model.Id==0 ? "Новая услуга" : "Изменить услугу";
+}
+
+<section class="admin-page container">
+    <a class="muted small" href="/admin">← К управлению каталогом</a>
+    <h1>@(Model.Id==0 ? "НОВАЯ УСЛУГА." : "РЕДАКТИРОВАНИЕ.")</h1>
+    <form
+        asp-action="Save"
+        asp-route-id="@(Model.Id==0 ? null : (int?)Model.Id)"
+        method="post"
+        enctype="multipart/form-data"
+        class="edit-form"
+    >
+        <div asp-validation-summary="All" class="validation" role="alert"></div>
+        <div class="form-grid">
+            <div class="field">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" required/>
+                <span asp-validation-for="Name"></span>
+            </div>
+            <div class="field">
+                <label asp-for="ServiceCategoryId"></label>
+                <select asp-for="ServiceCategoryId" asp-items="ViewBag.Categories">
+                    <option value="">Выберите категорию</option>
+                </select>
+                <span asp-validation-for="ServiceCategoryId"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" type="text" inputmode="decimal" required/>
+                <small>Дробную часть указывайте через запятую.</small>
+                <span asp-validation-for="Price"></span>
+            </div>
+            <div class="field">
+                <label asp-for="PriceUnit"></label>
+                <input asp-for="PriceUnit" required/>
+                <span asp-validation-for="PriceUnit"></span>
+            </div>
+        </div>
+        <div class="field">
+            <label asp-for="Summary"></label>
+            <textarea asp-for="Summary" rows="2" required></textarea>
+            <span asp-validation-for="Summary"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" rows="5" required></textarea>
+            <span asp-validation-for="Description"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Specs"></label>
+            <input asp-for="Specs" required/>
+            <span asp-validation-for="Specs"></span>
+        </div>
+        <div class="field">
+            <label asp-for="SortOrder"></label>
+            <input asp-for="SortOrder" type="number" min="0" max="9999"/>
+            <span asp-validation-for="SortOrder"></span>
+        </div>
+        <div class="field">
+            <label for="image">Изображение</label>
+            <input
+                id="image"
+                name="image"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                data-image-input
+            />
+            <small>JPEG, PNG или WebP, до 4 МБ. Если файл не выбран, текущее изображение сохранится.</small>
+            @Html.ValidationMessage("image")
+            <img
+                asp-append-version="true"
+                class="image-preview"
+                src="@Model.ImagePath"
+                alt="Предпросмотр изображения услуги"
+                data-image-preview
+            />
+        </div>
+        <div class="form-actions">
+            <button class="button button-light" type="submit">Сохранить услугу <span>↗</span></button>
+            <a class="text-link" href="/admin">Отмена</a>
+        </div>
+    </form>
+</section>

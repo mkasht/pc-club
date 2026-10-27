@@ -1,3 +1,11 @@
 @model MessagePage
-@{ ViewData["Title"] = Model.Title; }
-<section class="page-heading message-page container"><span class="section-index">PC CLUB</span><h1>@Model.Title</h1><p class="lead">@Model.Text</p><a class="button button-light" href="/services">К игровым зонам <span>↗</span></a></section>
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<section class="page-heading message-page container">
+    <span class="section-index">PC CLUB</span>
+    <h1>@Model.Title</h1>
+    <p class="lead">@Model.Text</p>
+    <a class="button button-light" href="/services">К игровым зонам <span>↗</span></a>
+</section>

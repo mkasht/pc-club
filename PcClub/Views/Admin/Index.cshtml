@@ -1,5 +1,99 @@
 @model CatalogPage
-@{ ViewData["Title"] = "Управление клубом"; }
-<section class="admin-page container"><span class="section-index">PC CLUB / УПРАВЛЕНИЕ</span><div class="section-heading"><h1>КАТАЛОГ КЛУБА.</h1><a class="button button-light" href="/admin/services/new">Добавить услугу +</a></div><div class="admin-stats"><span>@Model.Services.Count услуг</span><span>@Model.Categories.Count категории</span><a href="/services">Открыть каталог ↗</a><a href="/api/services" target="_blank" rel="noopener">Посмотреть API ↗</a></div>
-<div class="table-wrap"><table><caption>Игровые зоны и тарифы</caption><thead><tr><th>Услуга</th><th>Категория</th><th>Тариф</th><th>Действия</th></tr></thead><tbody>@foreach(var service in Model.Services){<tr><td><a href="/services/@service.Id">@service.Name</a></td><td>@service.Category?.Name</td><td>@service.Price.ToString("0.##") ₽ / @service.PriceUnit</td><td><div class="row-actions"><a href="/admin/services/@service.Id">Изменить ↗</a><form asp-action="Delete" asp-route-id="@service.Id" method="post" data-confirm="Удалить услугу @service.Name? Это действие нельзя отменить."><button class="danger-link" type="submit">Удалить</button></form></div></td></tr>}</tbody></table></div>
-<section class="category-section"><h2>КАТЕГОРИИ</h2><p class="muted">Категорию с услугами удалить нельзя: сначала перенесите или удалите услуги.</p>@foreach(var category in Model.Categories){<div class="category-row"><form asp-action="SaveCategory" asp-route-id="@category.Id" method="post" class="category-edit"><label class="sr-only" for="cat-@category.Id">Название категории</label><input id="cat-@category.Id" name="Name" value="@category.Name" maxlength="100" required/><label class="sr-only" for="sort-@category.Id">Порядок</label><input id="sort-@category.Id" type="number" name="SortOrder" value="@category.SortOrder" min="0" max="9999" required/><button class="button button-small" type="submit">Сохранить</button></form><form asp-action="DeleteCategory" asp-route-id="@category.Id" method="post" data-confirm="Удалить категорию @category.Name?"><button class="danger-link" type="submit">Удалить</button></form></div>}<h3>Добавить категорию</h3><form asp-action="SaveCategory" method="post" class="category-edit"><label class="sr-only" for="new-category">Название новой категории</label><input id="new-category" name="Name" placeholder="Название категории" maxlength="100" required/><label class="sr-only" for="new-sort">Порядок новой категории</label><input id="new-sort" type="number" name="SortOrder" value="0" min="0" max="9999" required/><button class="button button-small" type="submit">Добавить +</button></form></section></section>
+@{
+    ViewData["Title"] = "Управление клубом";
+}
+
+<section class="admin-page container">
+    <span class="section-index">PC CLUB / УПРАВЛЕНИЕ</span>
+    <div class="section-heading">
+        <h1>КАТАЛОГ КЛУБА.</h1>
+        <a class="button button-light" href="/admin/services/new">Добавить услугу +</a>
+    </div>
+    <div class="admin-stats">
+        <span>@Model.Services.Count услуг</span>
+        <span>@Model.Categories.Count категории</span>
+        <a href="/services">Открыть каталог ↗</a>
+        <a href="/api/services" target="_blank" rel="noopener">Посмотреть API ↗</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <caption>Игровые зоны и тарифы</caption>
+            <thead>
+                <tr>
+                    <th>Услуга</th>
+                    <th>Категория</th>
+                    <th>Тариф</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var service in Model.Services)
+                {
+                    <tr>
+                        <td><a href="/services/@service.Id">@service.Name</a></td>
+                        <td>@service.Category?.Name</td>
+                        <td>@service.Price.ToString("0.##") ₽ / @service.PriceUnit</td>
+                        <td>
+                            <div class="row-actions">
+                                <a href="/admin/services/@service.Id">Изменить ↗</a>
+                                <form
+                                    asp-action="Delete"
+                                    asp-route-id="@service.Id"
+                                    method="post"
+                                    data-confirm="Удалить услугу @service.Name? Это действие нельзя отменить."
+                                >
+                                    <button class="danger-link" type="submit">Удалить</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <section class="category-section">
+        <h2>КАТЕГОРИИ</h2>
+        <p class="muted">Категорию с услугами удалить нельзя: сначала перенесите или удалите услуги.</p>
+        @foreach (var category in Model.Categories)
+        {
+            <div class="category-row">
+                <form
+                    asp-action="SaveCategory"
+                    asp-route-id="@category.Id"
+                    method="post"
+                    class="category-edit"
+                >
+                    <label class="sr-only" for="cat-@category.Id">Название категории</label>
+                    <input id="cat-@category.Id" name="Name" value="@category.Name" maxlength="100" required/>
+                    <label class="sr-only" for="sort-@category.Id">Порядок</label>
+                    <input
+                        id="sort-@category.Id"
+                        type="number"
+                        name="SortOrder"
+                        value="@category.SortOrder"
+                        min="0"
+                        max="9999"
+                        required
+                    />
+                    <button class="button button-small" type="submit">Сохранить</button>
+                </form>
+                <form
+                    asp-action="DeleteCategory"
+                    asp-route-id="@category.Id"
+                    method="post"
+                    data-confirm="Удалить категорию @category.Name?"
+                >
+                    <button class="danger-link" type="submit">Удалить</button>
+                </form>
+            </div>
+        }
+        <h3>Добавить категорию</h3>
+        <form asp-action="SaveCategory" method="post" class="category-edit">
+            <label class="sr-only" for="new-category">Название новой категории</label>
+            <input id="new-category" name="Name" placeholder="Название категории" maxlength="100" required/>
+            <label class="sr-only" for="new-sort">Порядок новой категории</label>
+            <input id="new-sort" type="number" name="SortOrder" value="0" min="0" max="9999" required/>
+            <button class="button button-small" type="submit">Добавить +</button>
+        </form>
+    </section>
+</section>
