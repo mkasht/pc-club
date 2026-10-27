@@ -1,0 +1,92 @@
+[
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/",
+    "width": 360
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/services",
+    "width": 360
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/services/3",
+    "width": 360
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/contacts",
+    "width": 360
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/account/register",
+    "width": 360
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/",
+    "width": 768
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/services",
+    "width": 768
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/services/3",
+    "width": 768
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/contacts",
+    "width": 768
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/account/register",
+    "width": 768
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/",
+    "width": 1440
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/services",
+    "width": 1440
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/services/3",
+    "width": 1440
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/contacts",
+    "width": 1440
+  },
+  {
+    "h1Count": 1,
+    "overflow": false,
+    "path": "/account/register",
+    "width": 1440
+  }
+]

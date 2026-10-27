@@ -1,0 +1,25 @@
+**/bin/
+**/obj/
+**/.vs/
+*.user
+.setup/
+vs-startup.xml
+PcClub/wwwroot/uploads/
+*.log
+TestResults/
+.layero/
+**/.layero/
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.key
+*.bak
+*.mdf
+*.ldf
+*.dump
+appsettings.Local.json
+**/appsettings.Local.json
+история выполнения.json
+Metodichka (1).docx

@@ -1,0 +1,45 @@
+@inject IOptions<ClubOptions> ClubSettings
+@{ var club = ClubSettings.Value; var title = ViewData["Title"]?.ToString(); }
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080808" />
+    <meta name="description" content="PC CLUB — концепция игрового пространства. Зоны для игры, приватные комнаты и консольный лаунж." />
+    <title>@(title is null ? "Твоё место в игре" : title) — @club.Name</title>
+    <link rel="icon" type="image/svg+xml" href="~/favicon.svg" />
+    <link rel="preload" href="~/fonts/Oswald.ttf" as="font" type="font/ttf" crossorigin />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+    <noscript><style>.zone-panel[hidden]{display:grid!important;margin-top:24px}.zone-tabs{display:none}.menu-toggle{display:none}.desktop-nav{display:flex;flex-wrap:wrap}.site-header{position:relative;height:auto;flex-wrap:wrap;padding-block:20px}.inner-page #main{padding-top:0}</style></noscript>
+</head>
+<body class="@(ViewData["Home"] is true ? "is-home" : "inner-page")">
+<a class="skip-link" href="#main">К содержимому</a>
+<header class="site-header" id="site-header">
+    <a href="/" class="brand" aria-label="PC Club — главная"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M11 3h23v10H16v14h18v10H3V11z" fill="currentColor"/><path d="M26 17h11v6H26z" fill="currentColor"/></svg><span>PC CLUB<span class="brand-caption">PLAY. CONNECT. REPEAT.</span></span></a>
+    <nav class="desktop-nav" aria-label="Основная навигация"><a href="/services">Зоны и тарифы</a><a href="/#equipment">Оснащение</a><a href="/#interior">Интерьер</a><a href="/contacts">Контакты</a></nav>
+    <div class="header-actions">
+        @if (User.Identity?.IsAuthenticated == true) {
+            @if (User.IsInRole("Admin")) { <a class="account-link" href="/admin">Управление</a> }
+            <form asp-controller="Account" asp-action="Logout" method="post"><button class="account-link" type="submit">Выйти ↗</button></form>
+        } else { <a class="account-link" href="/account/login">Войти ↗</a> }
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Открыть меню"><span></span><span></span></button>
+    </div>
+</header>
+<dialog class="mobile-menu" id="mobile-menu" aria-label="Навигация">
+    <div class="mobile-menu-top"><span class="eyebrow">PC CLUB / НАВИГАЦИЯ</span><button class="close-button" type="button" data-close-menu aria-label="Закрыть меню">×</button></div>
+    <nav><a href="/">О клубе</a><a href="/services">Зоны и тарифы</a><a href="/#equipment">Оснащение</a><a href="/#interior">Интерьер</a><a href="/contacts">Контакты</a></nav>
+    @if (User.Identity?.IsAuthenticated != true) { <a class="button button-light" href="/account/login">Войти в клуб <span>↗</span></a> }
+    else if (User.IsInRole("Admin")) { <a class="button button-light" href="/admin">Управление <span>↗</span></a> }
+</dialog>
+@if (TempData["Notice"] is string notice) { <div class="toast" role="status">@notice<button type="button" aria-label="Закрыть уведомление" data-dismiss>×</button></div> }
+<main id="main">@RenderBody()</main>
+<footer class="site-footer container">
+    <div class="footer-top"><a href="/" class="footer-wordmark">PC CLUB<span>↗</span></a><p>Место для игры.<br />Пространство для своих.</p><a href="/services" class="text-link">Выбрать зону <span>↗</span></a></div>
+    <div class="footer-bottom"><span>© @DateTime.Now.Year PC CLUB</span><nav aria-label="Ссылки в подвале"><a href="/contacts">Контакты</a><a href="/account/register">Регистрация</a><a href="/account/login">Вход</a></nav><a href="#main" class="back-top">Наверх ↑</a></div>
+    @if (club.DemoMode) { <p class="demo-note">Учебная версия. Интерьеры сгенерированы с ИИ, тарифы и оснащение демонстрационные. Бронирование и оплата пока не подключены.</p> }
+</footer>
+<dialog class="gallery-dialog" id="gallery-dialog" aria-label="Просмотр интерьера"><button class="close-button" type="button" data-close-gallery aria-label="Закрыть изображение">×</button><img asp-append-version="true" src="/images/arena.webp" alt="" /><p></p></dialog>
+</body>
+</html>
